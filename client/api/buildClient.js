@@ -11,7 +11,7 @@ const buildClient = ({ req }) => {
   } else {
     // client
     return axios.create({
-      baseURL: "/",
+      baseURL: "https://shienlee73.app/",
     });
   }
 };
