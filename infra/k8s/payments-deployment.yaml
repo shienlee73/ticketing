@@ -28,6 +28,11 @@ spec:
                 secretKeyRef:
                   name: stripe-secret
                   key: STRIPE_KEY
+            - name: SENDGRID_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sendgrid-secret
+                  key: SENDGRID_KEY
             - name: NATS_URL
               value: "http://nats-service:4222"
             - name: NATS_CLUSTER_ID

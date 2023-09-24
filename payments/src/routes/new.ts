@@ -8,11 +8,14 @@ import {
   AuthorizationError,
   OrderStatus,
 } from "@tickets73/common";
+import sgMail from "@sendgrid/mail";
 import { Order } from "../models/Order";
 import { stripe } from "../stripe";
 import { Payment } from "../models/Payment";
 import { PaymentCreatedPublisher } from "../events/publishers/PaymentCreatedPublisher";
 import { natsWrapper } from "../NatsWrapper";
+
+sgMail.setApiKey(process.env.SENDGRID_KEY!);
 
 const router = Router();
 
@@ -55,6 +58,16 @@ router.post(
       orderId: payment.orderId,
       stripeId: payment.stripeId,
     });
+
+    // Send email to user
+    const msg = {
+      to: req.user!.email,
+      from: "shienlee73@gmail.com",
+      subject: "Payment Confirmation for Your Order",
+      text: `Dear Customer\nYour payment for order ${order.id} has been successfully processed. Thank you for your purchase!`,
+      html: `<p>Dear Customer,</p><p>Your payment for order ${order.id} has been successfully processed. Thank you for your purchase!</p>`,
+    };
+    sgMail.send(msg);
 
     res.status(201).send({ id: payment.id });
   }
