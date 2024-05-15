@@ -31,7 +31,11 @@ const OrderShow = ({ currentUser, order }) => {
     return <div>Order completed</div>;
   }
 
-  if (timeLeft <= 0) {
+  if (timeLeft == 0) {
+    return <div>Waiting...</div>
+  }
+
+  if (timeLeft < 0) {
     return <div>Order Expired</div>;
   }
 
